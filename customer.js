@@ -7,6 +7,27 @@ var Customer = (function() {
 		_name = name
 	}
 
+	function amountFor(rental) {
+		var result = 0;
+		switch  rental.getMovie().getPriceCode()) {
+			case Movie.REGULAR:
+				result += 2;
+				if  rental.getDaysRented() > 2)
+					result +=  rental.getDaysRented() - 2) * 1.5;
+				break;
+			case Movie.NEW_RELEASE:
+				result += rental.getDaysRented() * 3;
+				break;
+			case Movie.CHILDRENS:
+				result += 1.5;
+				if (rental.getDaysRented() > 3)
+					result +=  rental.getDaysRented() - 3) * 1.5;
+				break;
+		};
+
+		return result;
+	};
+
 	Customer.prototype.addRental = function(rental) {
 		_rentals.push(rental);
 	};
@@ -23,24 +44,7 @@ var Customer = (function() {
 		var rental, thisAmount;
 		for (var i = 0; i < rentals.length; i++) {
 		    rental = rentals[i];
-		    thisAmount = 0;
-			//determina o aluguel de acordo com o tipo
-			switch  rental.getMovie().getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if  rental.getDaysRented() > 2)
-						thisAmount +=  rental.getDaysRented() - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += rental.getDaysRented() * 3;
-					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (rental.getDaysRented() > 3)
-						thisAmount +=  rental.getDaysRented() - 3) * 1.5;
-					break;
-			};
-
+		    thisAmount = amountFor(rental);
 			// adiciona pontos de fidelidade
 			frequentRenterPoints ++;
 			// adiciona bonus a lancamentos com mais de um dia de aluguel
